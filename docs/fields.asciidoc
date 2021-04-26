@@ -29,15 +29,308 @@ grouped in the following categories:
 None
 
 
-*`counter`*::
+
+*`alphasoc.pipeline`*::
 +
 --
-PLEASE UPDATE DOCUMENTATION
+type: keyword
+
+--
 
 
+
+*`alphasoc.event.src.host`*::
++
+--
+type: alias
+
+alias to: source.address
+
+--
+
+*`alphasoc.event.src.ip`*::
++
+--
+type: alias
+
+alias to: source.ip
+
+--
+
+*`alphasoc.event.src.mac`*::
++
+--
+type: alias
+
+alias to: source.mac
+
+--
+
+*`alphasoc.event.src.port`*::
++
+--
+type: alias
+
+alias to: source.port
+
+--
+
+*`alphasoc.event.src.user`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.src.id`*::
++
+--
+type: keyword
+
+--
+
+
+*`alphasoc.event.dest.ip`*::
++
+--
+type: alias
+
+alias to: destination.ip
+
+--
+
+*`alphasoc.event.dest.ip_raw`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.dest.alias`*::
++
+--
+alias to: destination.port
+
+--
+
+*`alphasoc.event.dest.url`*::
++
+--
+type: alias
+
+alias to: url.original
+
+--
+
+*`alphasoc.event.ts`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.query`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.qtype`*::
++
+--
+type: alias
+
+alias to: dns.question.type
+
+--
+
+*`alphasoc.event.method`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.status`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.content_type`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.referrer`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.user_agent`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.bytes_in`*::
++
+--
+type: alias
+
+alias to: destination.bytes
+
+--
+
+*`alphasoc.event.bytes_out`*::
++
+--
+type: alias
+
+alias to: source.bytes
+
+--
+
+*`alphasoc.event.protocol`*::
++
+--
+type: alias
+
+alias to: network.transport
+
+--
+
+*`alphasoc.event.duration`*::
++
+--
+type: alias
+
+alias to: event.duration
+
+--
+
+*`alphasoc.event.app`*::
++
+--
+type: alias
+
+alias to: network.protocol
+
+--
+
+*`alphasoc.event.action`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.ja3`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.ja3s`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.cert_hash`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.issuer`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.subject`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.event.valid_from`*::
++
+--
+type: date
+
+--
+
+*`alphasoc.event.valid_to`*::
++
+--
+type: date
+
+--
+
+
+*`alphasoc.threat.value`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.threat.title`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.threat.severity`*::
++
+--
 type: long
 
-required: True
+--
+
+
+*`alphasoc.wisdom.domain`*::
++
+--
+type: alias
+
+alias to: destination.domain
+
+--
+
+*`alphasoc.wisdom.flags`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.wisdom.labels`*::
++
+--
+type: keyword
+
+--
+
+*`alphasoc.destination`*::
++
+--
+type: keyword
 
 --
 

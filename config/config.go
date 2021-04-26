@@ -3,12 +3,8 @@
 
 package config
 
-import "time"
-
 type Config struct {
-	Period time.Duration `config:"period"`
-}
-
-var DefaultConfig = Config{
-	Period: 1 * time.Second,
+	RegistryFile string `config:"registry_file"`
+	APIURL       string `config:"api_url"`
+	APIKey       string `config:"api_key"`
 }

@@ -2,8 +2,115 @@
   title: alphasocbeat
   description:
   fields:
-    - name: counter
-      type: long
-      required: true
-      description: >
-        PLEASE UPDATE DOCUMENTATION
+  - name: alphasoc
+    title: AlphaSOC
+    type: group
+    fields:
+    - name: pipeline
+      type: keyword
+    - name: event
+      type: group
+      fields:
+      - name: src
+        type: group
+        fields:
+        - name: host
+          type: alias
+          path: source.address
+        - name: ip
+          type: alias
+          path: source.ip
+        - name: mac
+          type: alias
+          path: source.mac
+        - name: port
+          type: alias
+          path: source.port
+        - name: user
+          type: keyword
+        - name: id
+          type: keyword
+      - name: dest
+        type: group
+        fields:
+        - name: ip
+          type: alias
+          path: destination.ip
+        - name: ip_raw
+          type: keyword
+          copy_to: alphasoc.destination
+        - name: alias
+          path: destination.port
+        - name: url
+          type: alias
+          path: url.original
+      - name: ts
+        type: keyword
+      - name: query
+        type: keyword
+        copy_to: alphasoc.destination
+      - name: qtype
+        type: alias
+        path: dns.question.type
+      - name: method
+        type: keyword
+      - name: status
+        type: keyword
+      - name: content_type
+        type: keyword
+      - name: referrer
+        type: keyword
+      - name: user_agent
+        type: keyword
+      - name: bytes_in
+        type: alias
+        path: destination.bytes
+      - name: bytes_out
+        type: alias
+        path: source.bytes
+      - name: protocol
+        type: alias
+        path: network.transport
+      - name: duration
+        type: alias
+        path: event.duration
+      - name: app
+        type: alias
+        path: network.protocol
+      - name: action
+        type: keyword
+      - name: ja3
+        type: keyword
+      - name: ja3s
+        type: keyword
+      - name: cert_hash
+        type: keyword
+      - name: issuer
+        type: keyword
+      - name: subject
+        type: keyword
+      - name: valid_from
+        type: date
+      - name: valid_to
+        type: date
+    - name: threat
+      type: group
+      fields:
+      - name: value
+        type: keyword
+      - name: title
+        type: keyword
+      - name: severity
+        type: long
+    - name: wisdom
+      type: group
+      fields:
+      - name: domain
+        type: alias
+        path: destination.domain
+      - name: flags
+        type: keyword
+      - name: labels
+        type: keyword
+    - name: destination
+      type: keyword

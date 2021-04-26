@@ -37,6 +37,7 @@ require (
 	github.com/pierrre/gotestcover v0.0.0-20160517101806-924dca7d15f0
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
+	github.com/stretchr/testify v1.7.0
 	github.com/tsg/go-daemon v0.0.0-20200207173439-e704b93fd89b
 	go.elastic.co/apm v1.11.0 // indirect
 	go.elastic.co/ecszap v1.0.0 // indirect
@@ -47,7 +48,7 @@ require (
 	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect
 	golang.org/x/sys v0.0.0-20210426080607-c94f62235c83 // indirect
 	golang.org/x/tools v0.1.0
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0
 	honnef.co/go/tools v0.1.3 // indirect
 	howett.net/plist v0.0.0-20201203080718-1454fab16a06 // indirect
 )
