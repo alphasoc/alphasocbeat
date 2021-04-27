@@ -5,3 +5,6 @@
 /alphasocbeat
 /alphasocbeat.test
 *.pyc
+
+/data/checkpoint.yaml
+/data/checkpoint.yml
