@@ -1,0 +1,829 @@
+{
+  "objects": [
+    {
+      "attributes": {
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": {
+            "filter": [],
+            "query": {
+              "language": "kuery",
+              "query": ""
+            }
+          }
+        },
+        "optionsJSON": {
+          "hidePanelTitles": false,
+          "useMargins": true
+        },
+        "panelsJSON": [
+          {
+            "embeddableConfig": {
+              "enhancements": {},
+              "hidePanelTitles": false,
+              "savedVis": {
+                "data": {
+                  "aggs": [],
+                  "searchSource": {
+                    "filter": [],
+                    "query": {
+                      "language": "kuery",
+                      "query": ""
+                    }
+                  }
+                },
+                "description": "",
+                "params": {
+                  "controls": [
+                    {
+                      "fieldName": "alphasoc.threat.severity",
+                      "id": "1619458179039",
+                      "indexPattern": "alphasocbeat-*",
+                      "indexPatternRefName": "control_0_index_pattern",
+                      "label": "Severity",
+                      "options": {
+                        "dynamicOptions": true,
+                        "multiselect": true,
+                        "order": "desc",
+                        "size": 10,
+                        "type": "terms"
+                      },
+                      "parent": "",
+                      "type": "list"
+                    }
+                  ],
+                  "pinFilters": false,
+                  "updateFiltersOnChange": false,
+                  "useTimeFilter": false
+                },
+                "title": "",
+                "type": "input_control_vis",
+                "uiState": {}
+              }
+            },
+            "gridData": {
+              "h": 10,
+              "i": "cc6c1cb7-eccb-4df8-b06a-f9cebe511841",
+              "w": 12,
+              "x": 0,
+              "y": 0
+            },
+            "panelIndex": "cc6c1cb7-eccb-4df8-b06a-f9cebe511841",
+            "title": "Severity filter",
+            "type": "visualization",
+            "version": "7.12.0"
+          },
+          {
+            "embeddableConfig": {
+              "attributes": {
+                "references": [
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-current-indexpattern",
+                    "type": "index-pattern"
+                  },
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-layer-4323a85f-9db9-46a3-9e38-ed89647eb5de",
+                    "type": "index-pattern"
+                  }
+                ],
+                "state": {
+                  "datasourceStates": {
+                    "indexpattern": {
+                      "layers": {
+                        "4323a85f-9db9-46a3-9e38-ed89647eb5de": {
+                          "columnOrder": [
+                            "cb88251c-0636-4fa4-bbbe-e4f76da3cd94",
+                            "a8b5e339-e56d-437d-bd70-b960002f3f5b",
+                            "28022bbc-2c6c-4620-81b2-943e5f71bf3e"
+                          ],
+                          "columns": {
+                            "28022bbc-2c6c-4620-81b2-943e5f71bf3e": {
+                              "dataType": "number",
+                              "isBucketed": false,
+                              "label": "Count of records",
+                              "operationType": "count",
+                              "scale": "ratio",
+                              "sourceField": "Records"
+                            },
+                            "a8b5e339-e56d-437d-bd70-b960002f3f5b": {
+                              "dataType": "number",
+                              "isBucketed": true,
+                              "label": "alphasoc.threat.severity",
+                              "operationType": "range",
+                              "params": {
+                                "maxBars": "auto",
+                                "ranges": [
+                                  {
+                                    "from": 0,
+                                    "label": "",
+                                    "to": 1000
+                                  }
+                                ],
+                                "type": "histogram"
+                              },
+                              "scale": "interval",
+                              "sourceField": "alphasoc.threat.severity"
+                            },
+                            "cb88251c-0636-4fa4-bbbe-e4f76da3cd94": {
+                              "dataType": "date",
+                              "isBucketed": true,
+                              "label": "@timestamp",
+                              "operationType": "date_histogram",
+                              "params": {
+                                "interval": "30m"
+                              },
+                              "scale": "interval",
+                              "sourceField": "@timestamp"
+                            }
+                          },
+                          "incompleteColumns": {}
+                        }
+                      }
+                    }
+                  },
+                  "filters": [],
+                  "query": {
+                    "language": "kuery",
+                    "query": ""
+                  },
+                  "visualization": {
+                    "axisTitlesVisibilitySettings": {
+                      "x": true,
+                      "yLeft": true,
+                      "yRight": true
+                    },
+                    "fittingFunction": "None",
+                    "gridlinesVisibilitySettings": {
+                      "x": true,
+                      "yLeft": true,
+                      "yRight": true
+                    },
+                    "layers": [
+                      {
+                        "accessors": [
+                          "28022bbc-2c6c-4620-81b2-943e5f71bf3e"
+                        ],
+                        "layerId": "4323a85f-9db9-46a3-9e38-ed89647eb5de",
+                        "position": "top",
+                        "seriesType": "bar_stacked",
+                        "showGridlines": false,
+                        "splitAccessor": "a8b5e339-e56d-437d-bd70-b960002f3f5b",
+                        "xAccessor": "cb88251c-0636-4fa4-bbbe-e4f76da3cd94"
+                      }
+                    ],
+                    "legend": {
+                      "isVisible": true,
+                      "position": "right"
+                    },
+                    "preferredSeriesType": "bar_stacked",
+                    "tickLabelsVisibilitySettings": {
+                      "x": true,
+                      "yLeft": true,
+                      "yRight": true
+                    },
+                    "valueLabels": "hide"
+                  }
+                },
+                "title": "",
+                "type": "lens",
+                "visualizationType": "lnsXY"
+              },
+              "enhancements": {},
+              "hidePanelTitles": false
+            },
+            "gridData": {
+              "h": 10,
+              "i": "2497fbb5-a0b0-4c54-93d9-f942ebd16334",
+              "w": 36,
+              "x": 12,
+              "y": 0
+            },
+            "panelIndex": "2497fbb5-a0b0-4c54-93d9-f942ebd16334",
+            "title": "Threats in time",
+            "type": "lens",
+            "version": "7.12.0"
+          },
+          {
+            "embeddableConfig": {
+              "attributes": {
+                "references": [
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-current-indexpattern",
+                    "type": "index-pattern"
+                  },
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-layer-715aa166-ffeb-4ff7-b606-820c5a100b57",
+                    "type": "index-pattern"
+                  }
+                ],
+                "state": {
+                  "datasourceStates": {
+                    "indexpattern": {
+                      "layers": {
+                        "715aa166-ffeb-4ff7-b606-820c5a100b57": {
+                          "columnOrder": [
+                            "97b53f17-719c-4e11-b8fa-d6c9bea7c667",
+                            "b7bf3190-1175-44bd-b109-54719dd9d0cb",
+                            "72e8965e-d6a7-4dbf-921c-5577c68fcb33",
+                            "656c3093-9658-43be-a860-a55fcfde9e4a"
+                          ],
+                          "columns": {
+                            "656c3093-9658-43be-a860-a55fcfde9e4a": {
+                              "dataType": "number",
+                              "isBucketed": false,
+                              "label": "Count of records",
+                              "operationType": "count",
+                              "scale": "ratio",
+                              "sourceField": "Records"
+                            },
+                            "72e8965e-d6a7-4dbf-921c-5577c68fcb33": {
+                              "customLabel": true,
+                              "dataType": "number",
+                              "isBucketed": true,
+                              "label": "Severity",
+                              "operationType": "range",
+                              "params": {
+                                "maxBars": "auto",
+                                "ranges": [
+                                  {
+                                    "from": 0,
+                                    "label": "",
+                                    "to": 1000
+                                  }
+                                ],
+                                "type": "histogram"
+                              },
+                              "scale": "interval",
+                              "sourceField": "alphasoc.threat.severity"
+                            },
+                            "97b53f17-719c-4e11-b8fa-d6c9bea7c667": {
+                              "customLabel": true,
+                              "dataType": "ip",
+                              "isBucketed": true,
+                              "label": "Source",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "656c3093-9658-43be-a860-a55fcfde9e4a",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.event.src.ip"
+                            },
+                            "b7bf3190-1175-44bd-b109-54719dd9d0cb": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Threat",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "656c3093-9658-43be-a860-a55fcfde9e4a",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.threat.title"
+                            }
+                          },
+                          "incompleteColumns": {}
+                        }
+                      }
+                    }
+                  },
+                  "filters": [],
+                  "query": {
+                    "language": "kuery",
+                    "query": ""
+                  },
+                  "visualization": {
+                    "columns": [
+                      {
+                        "columnId": "656c3093-9658-43be-a860-a55fcfde9e4a",
+                        "hidden": true
+                      },
+                      {
+                        "columnId": "97b53f17-719c-4e11-b8fa-d6c9bea7c667"
+                      },
+                      {
+                        "columnId": "b7bf3190-1175-44bd-b109-54719dd9d0cb"
+                      },
+                      {
+                        "columnId": "72e8965e-d6a7-4dbf-921c-5577c68fcb33"
+                      }
+                    ],
+                    "layerId": "715aa166-ffeb-4ff7-b606-820c5a100b57",
+                    "sorting": {
+                      "columnId": "72e8965e-d6a7-4dbf-921c-5577c68fcb33",
+                      "direction": "desc"
+                    }
+                  }
+                },
+                "title": "",
+                "type": "lens",
+                "visualizationType": "lnsDatatable"
+              },
+              "enhancements": {
+                "dynamicActions": {
+                  "events": [
+                    {
+                      "action": {
+                        "config": {
+                          "useCurrentDateRange": true,
+                          "useCurrentFilters": true
+                        },
+                        "factoryId": "DASHBOARD_TO_DASHBOARD_DRILLDOWN",
+                        "name": "Details drilldown"
+                      },
+                      "eventId": "ee1666cc-7191-4570-a905-49a1c23042a0",
+                      "triggers": [
+                        "FILTER_TRIGGER"
+                      ]
+                    }
+                  ]
+                }
+              },
+              "hidePanelTitles": false
+            },
+            "gridData": {
+              "h": 16,
+              "i": "b9106499-6791-4f4d-b3d5-07d8b03b3724",
+              "w": 48,
+              "x": 0,
+              "y": 10
+            },
+            "panelIndex": "b9106499-6791-4f4d-b3d5-07d8b03b3724",
+            "title": "Threats",
+            "type": "lens",
+            "version": "7.12.0"
+          }
+        ],
+        "timeRestore": false,
+        "title": "[AlphaSOC] Threats",
+        "version": 1
+      },
+      "coreMigrationVersion": "7.12.0",
+      "id": "02611e70-a6b6-11eb-947f-03be934e61f8",
+      "migrationVersion": {
+        "dashboard": "7.11.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "alphasocbeat-*",
+          "name": "control_0_index_pattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-current-indexpattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-layer-4323a85f-9db9-46a3-9e38-ed89647eb5de",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-current-indexpattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-layer-715aa166-ffeb-4ff7-b606-820c5a100b57",
+          "type": "index-pattern"
+        },
+        {
+          "id": "cea35a10-a6b7-11eb-947f-03be934e61f8",
+          "name": "drilldown:DASHBOARD_TO_DASHBOARD_DRILLDOWN:ee1666cc-7191-4570-a905-49a1c23042a0:dashboardId",
+          "type": "dashboard"
+        }
+      ],
+      "type": "dashboard",
+      "updated_at": "2021-04-27T12:26:54.876Z",
+      "version": "WzIxOTU0LDI0XQ=="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": {
+            "filter": [],
+            "query": {
+              "language": "kuery",
+              "query": ""
+            }
+          }
+        },
+        "optionsJSON": {
+          "hidePanelTitles": false,
+          "useMargins": true
+        },
+        "panelsJSON": [
+          {
+            "embeddableConfig": {
+              "attributes": {
+                "references": [
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-current-indexpattern",
+                    "type": "index-pattern"
+                  },
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
+                    "type": "index-pattern"
+                  }
+                ],
+                "state": {
+                  "datasourceStates": {
+                    "indexpattern": {
+                      "layers": {
+                        "363ef9c0-35dd-4274-9dcc-35908b10af99": {
+                          "columnOrder": [
+                            "8873fef6-4e47-4282-996c-bb0483b64857",
+                            "aae29ffd-b8b6-4c45-ade4-586d9d9ed4a4",
+                            "a9761f39-647e-4667-a952-fa08671d1512",
+                            "f60d47f8-d93d-4e3b-898d-cd63e633cd6e",
+                            "10598d86-6dd7-4151-9b02-eb4bba8820d5",
+                            "d56b97af-5a0a-4f95-ba92-7efe3ada352f"
+                          ],
+                          "columns": {
+                            "10598d86-6dd7-4151-9b02-eb4bba8820d5": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Flag",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.wisdom.flags"
+                            },
+                            "8873fef6-4e47-4282-996c-bb0483b64857": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Timestamp",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.event.ts"
+                            },
+                            "a9761f39-647e-4667-a952-fa08671d1512": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Pipeline",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.pipeline"
+                            },
+                            "aae29ffd-b8b6-4c45-ade4-586d9d9ed4a4": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Destination",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.destination"
+                            },
+                            "d56b97af-5a0a-4f95-ba92-7efe3ada352f": {
+                              "dataType": "number",
+                              "isBucketed": false,
+                              "label": "Count of records",
+                              "operationType": "count",
+                              "scale": "ratio",
+                              "sourceField": "Records"
+                            },
+                            "f60d47f8-d93d-4e3b-898d-cd63e633cd6e": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Threat",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                                  "type": "column"
+                                },
+                                "orderDirection": "desc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.threat.title"
+                            }
+                          },
+                          "incompleteColumns": {}
+                        }
+                      }
+                    }
+                  },
+                  "filters": [],
+                  "query": {
+                    "language": "kuery",
+                    "query": ""
+                  },
+                  "visualization": {
+                    "columns": [
+                      {
+                        "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                        "hidden": true
+                      },
+                      {
+                        "columnId": "8873fef6-4e47-4282-996c-bb0483b64857"
+                      },
+                      {
+                        "columnId": "aae29ffd-b8b6-4c45-ade4-586d9d9ed4a4"
+                      },
+                      {
+                        "columnId": "a9761f39-647e-4667-a952-fa08671d1512"
+                      },
+                      {
+                        "columnId": "f60d47f8-d93d-4e3b-898d-cd63e633cd6e"
+                      },
+                      {
+                        "columnId": "10598d86-6dd7-4151-9b02-eb4bba8820d5"
+                      }
+                    ],
+                    "layerId": "363ef9c0-35dd-4274-9dcc-35908b10af99"
+                  }
+                },
+                "title": "",
+                "type": "lens",
+                "visualizationType": "lnsDatatable"
+              },
+              "enhancements": {},
+              "hidePanelTitles": false
+            },
+            "gridData": {
+              "h": 14,
+              "i": "94310799-6a3b-43eb-943f-822d62c43868",
+              "w": 48,
+              "x": 0,
+              "y": 0
+            },
+            "panelIndex": "94310799-6a3b-43eb-943f-822d62c43868",
+            "title": "Threats with destination",
+            "type": "lens",
+            "version": "7.12.0"
+          },
+          {
+            "embeddableConfig": {
+              "attributes": {
+                "references": [
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-current-indexpattern",
+                    "type": "index-pattern"
+                  },
+                  {
+                    "id": "alphasocbeat-*",
+                    "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
+                    "type": "index-pattern"
+                  }
+                ],
+                "state": {
+                  "datasourceStates": {
+                    "indexpattern": {
+                      "layers": {
+                        "363ef9c0-35dd-4274-9dcc-35908b10af99": {
+                          "columnOrder": [
+                            "8873fef6-4e47-4282-996c-bb0483b64857",
+                            "a9761f39-647e-4667-a952-fa08671d1512",
+                            "f60d47f8-d93d-4e3b-898d-cd63e633cd6e",
+                            "10598d86-6dd7-4151-9b02-eb4bba8820d5",
+                            "d56b97af-5a0a-4f95-ba92-7efe3ada352f"
+                          ],
+                          "columns": {
+                            "10598d86-6dd7-4151-9b02-eb4bba8820d5": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Flag",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "type": "alphabetical"
+                                },
+                                "orderDirection": "asc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.wisdom.flags"
+                            },
+                            "8873fef6-4e47-4282-996c-bb0483b64857": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Timestamp",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "type": "alphabetical"
+                                },
+                                "orderDirection": "asc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.event.ts"
+                            },
+                            "a9761f39-647e-4667-a952-fa08671d1512": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Pipeline",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "type": "alphabetical"
+                                },
+                                "orderDirection": "asc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.pipeline"
+                            },
+                            "d56b97af-5a0a-4f95-ba92-7efe3ada352f": {
+                              "dataType": "number",
+                              "isBucketed": false,
+                              "label": "Count of records",
+                              "operationType": "count",
+                              "scale": "ratio",
+                              "sourceField": "Records"
+                            },
+                            "f60d47f8-d93d-4e3b-898d-cd63e633cd6e": {
+                              "customLabel": true,
+                              "dataType": "string",
+                              "isBucketed": true,
+                              "label": "Threat",
+                              "operationType": "terms",
+                              "params": {
+                                "missingBucket": false,
+                                "orderBy": {
+                                  "type": "alphabetical"
+                                },
+                                "orderDirection": "asc",
+                                "otherBucket": false,
+                                "size": 100
+                              },
+                              "scale": "ordinal",
+                              "sourceField": "alphasoc.threat.title"
+                            }
+                          },
+                          "incompleteColumns": {}
+                        }
+                      }
+                    }
+                  },
+                  "filters": [],
+                  "query": {
+                    "language": "kuery",
+                    "query": ""
+                  },
+                  "visualization": {
+                    "columns": [
+                      {
+                        "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
+                        "hidden": true
+                      },
+                      {
+                        "columnId": "8873fef6-4e47-4282-996c-bb0483b64857"
+                      },
+                      {
+                        "columnId": "a9761f39-647e-4667-a952-fa08671d1512"
+                      },
+                      {
+                        "columnId": "f60d47f8-d93d-4e3b-898d-cd63e633cd6e"
+                      },
+                      {
+                        "columnId": "10598d86-6dd7-4151-9b02-eb4bba8820d5"
+                      }
+                    ],
+                    "layerId": "363ef9c0-35dd-4274-9dcc-35908b10af99"
+                  }
+                },
+                "title": "",
+                "type": "lens",
+                "visualizationType": "lnsDatatable"
+              },
+              "enhancements": {},
+              "hidePanelTitles": false
+            },
+            "gridData": {
+              "h": 14,
+              "i": "b4952130-ecfa-43f9-a453-af265687ad43",
+              "w": 48,
+              "x": 0,
+              "y": 14
+            },
+            "panelIndex": "b4952130-ecfa-43f9-a453-af265687ad43",
+            "title": "Threats",
+            "type": "lens",
+            "version": "7.12.0"
+          }
+        ],
+        "timeRestore": false,
+        "title": "[AlphaSOC] Details",
+        "version": 1
+      },
+      "coreMigrationVersion": "7.12.0",
+      "id": "cea35a10-a6b7-11eb-947f-03be934e61f8",
+      "migrationVersion": {
+        "dashboard": "7.11.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-current-indexpattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-current-indexpattern",
+          "type": "index-pattern"
+        },
+        {
+          "id": "alphasocbeat-*",
+          "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
+          "type": "index-pattern"
+        }
+      ],
+      "type": "dashboard",
+      "updated_at": "2021-04-27T12:26:54.876Z",
+      "version": "WzIxOTUzLDI0XQ=="
+    }
+  ],
+  "version": "7.12.0"
+}

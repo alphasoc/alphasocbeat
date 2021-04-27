@@ -8,7 +8,8 @@ alphasocbeat:
   api_url: https://api.alphasoc.net/v1/alerts
   api_key: <api_key>
 
-setup.dashboards.enabled: false
+setup.dashboards.enabled: true
+setup.dashboards.directory: _meta/kibana.generated
 # ================================== General ===================================
 
 # The name of the shipper that publishes the network data. It can be used to group

@@ -6601,6 +6601,7 @@
         type: keyword
       - name: cert_hash
         type: keyword
+        copy_to: alphasoc.destination
       - name: issuer
         type: keyword
       - name: subject
