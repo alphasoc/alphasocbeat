@@ -9,6 +9,38 @@ jobs:
         - run:
             name: Run tests
             command: go test -race -v ./...
+  
+  build_linux:
+    docker:
+      - image: circleci/golang:1.16
+    working_directory: /go/src/github.com/alphasoc/alphasocbeat
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: |
+            GOARCH=amd64 GOOS=linux go build -o /tmp/bin/alphasocbeat-linux-amd64 -ldflags "-X github.com/alphasoc/alphasocbeat/version.Version=$(git describe)"
+      - store_artifacts:
+          path: /tmp/bin/
+          destination: bin
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - bin
+  
+  publish:
+    docker:
+      - image: circleci/golang:1.16
+    working_directory: /go/src/github.com/alphasoc/alphasocbeat
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: publish
+          command: |
+            go get github.com/aktau/github-release
+            github-release release --draft --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64 --file bin/alphasocbeat-linux-amd64
 
 workflows:
   version: 2
@@ -18,3 +50,21 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - build_linux:
+          requires: 
+            - test
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+            branches:
+              ignore: /.*/
+      - publish:
+          context: github-alphasoc-deploy
+          requires:
+            - test
+            - build_linux
+          filters:
+            tags:
+              only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+            branches:
+              ignore: /.*/
