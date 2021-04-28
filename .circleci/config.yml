@@ -10,7 +10,7 @@ jobs:
             name: Run tests
             command: go test -race -v ./...
   
-  build_linux:
+  build:
     docker:
       - image: circleci/golang:1.16
     working_directory: /go/src/github.com/alphasoc/alphasocbeat
@@ -19,10 +19,9 @@ jobs:
       - run:
           name: build
           command: |
-            GOARCH=amd64 GOOS=linux go build -o /tmp/bin/alphasocbeat-linux-amd64 -ldflags "-X github.com/alphasoc/alphasocbeat/version.Version=$(git describe)"
-      - store_artifacts:
-          path: /tmp/bin/
-          destination: bin
+            GOARCH=amd64 GOOS=linux   go build -o /tmp/bin/alphasocbeat-linux-amd64
+            GOARCH=amd64 GOOS=windows go build -o /tmp/bin/alphasocbeat-windows-amd64.exe
+            GOARCH=amd64 GOOS=darwin  go build -o /tmp/bin/alphasocbeat-darwin-amd64
       - persist_to_workspace:
           root: /tmp
           paths:
@@ -39,8 +38,10 @@ jobs:
           name: publish
           command: |
             go get github.com/aktau/github-release
-            github-release -v release --draft --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG
-            github-release -v upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64 --file bin/alphasocbeat-linux-amd64
+            github-release release --draft --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64       --file bin/alphasocbeat-linux-amd64
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-windows-amd64.exe --file bin/alphasocbeat-windows-amd64.exe
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-darwin-amd64      --file bin/alphasocbeat-darwin-amd64
 
 workflows:
   version: 2
@@ -50,7 +51,7 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - build_linux:
+      - build:
           requires: 
             - test
           filters:
