@@ -63,9 +63,9 @@
               }
             },
             "gridData": {
-              "h": 10,
+              "h": 7,
               "i": "cc6c1cb7-eccb-4df8-b06a-f9cebe511841",
-              "w": 12,
+              "w": 48,
               "x": 0,
               "y": 0
             },
@@ -101,9 +101,10 @@
                           ],
                           "columns": {
                             "28022bbc-2c6c-4620-81b2-943e5f71bf3e": {
+                              "customLabel": true,
                               "dataType": "number",
                               "isBucketed": false,
-                              "label": "Count of records",
+                              "label": "Record count",
                               "operationType": "count",
                               "scale": "ratio",
                               "sourceField": "Records"
@@ -168,7 +169,7 @@
                         ],
                         "layerId": "4323a85f-9db9-46a3-9e38-ed89647eb5de",
                         "position": "top",
-                        "seriesType": "bar_stacked",
+                        "seriesType": "line",
                         "showGridlines": false,
                         "splitAccessor": "a8b5e339-e56d-437d-bd70-b960002f3f5b",
                         "xAccessor": "cb88251c-0636-4fa4-bbbe-e4f76da3cd94"
@@ -178,7 +179,7 @@
                       "isVisible": true,
                       "position": "right"
                     },
-                    "preferredSeriesType": "bar_stacked",
+                    "preferredSeriesType": "line",
                     "tickLabelsVisibilitySettings": {
                       "x": true,
                       "yLeft": true,
@@ -195,14 +196,14 @@
               "hidePanelTitles": false
             },
             "gridData": {
-              "h": 10,
+              "h": 21,
               "i": "2497fbb5-a0b0-4c54-93d9-f942ebd16334",
-              "w": 36,
-              "x": 12,
-              "y": 0
+              "w": 16,
+              "x": 0,
+              "y": 7
             },
             "panelIndex": "2497fbb5-a0b0-4c54-93d9-f942ebd16334",
-            "title": "Threats in time",
+            "title": "Threats over time",
             "type": "lens",
             "version": "7.12.0"
           },
@@ -360,11 +361,11 @@
               "hidePanelTitles": false
             },
             "gridData": {
-              "h": 16,
+              "h": 21,
               "i": "b9106499-6791-4f4d-b3d5-07d8b03b3724",
-              "w": 48,
-              "x": 0,
-              "y": 10
+              "w": 32,
+              "x": 16,
+              "y": 7
             },
             "panelIndex": "b9106499-6791-4f4d-b3d5-07d8b03b3724",
             "title": "Threats",
@@ -373,7 +374,7 @@
           }
         ],
         "timeRestore": false,
-        "title": "[AlphaSOC] Threats",
+        "title": "AlphaSOC Threat Hunter",
         "version": 1
       },
       "coreMigrationVersion": "7.12.0",
@@ -417,8 +418,8 @@
         }
       ],
       "type": "dashboard",
-      "updated_at": "2021-04-27T12:26:54.876Z",
-      "version": "WzIxOTU0LDI0XQ=="
+      "updated_at": "2021-04-28T13:14:04.821Z",
+      "version": "WzIzMjU0LDI1XQ=="
     },
     {
       "attributes": {
@@ -460,18 +461,18 @@
                         "363ef9c0-35dd-4274-9dcc-35908b10af99": {
                           "columnOrder": [
                             "8873fef6-4e47-4282-996c-bb0483b64857",
+                            "7239e8fb-774e-409b-a995-f9aa51903bc4",
                             "aae29ffd-b8b6-4c45-ade4-586d9d9ed4a4",
                             "a9761f39-647e-4667-a952-fa08671d1512",
                             "f60d47f8-d93d-4e3b-898d-cd63e633cd6e",
-                            "10598d86-6dd7-4151-9b02-eb4bba8820d5",
                             "d56b97af-5a0a-4f95-ba92-7efe3ada352f"
                           ],
                           "columns": {
-                            "10598d86-6dd7-4151-9b02-eb4bba8820d5": {
+                            "7239e8fb-774e-409b-a995-f9aa51903bc4": {
                               "customLabel": true,
-                              "dataType": "string",
+                              "dataType": "ip",
                               "isBucketed": true,
-                              "label": "Flag",
+                              "label": "Source IP",
                               "operationType": "terms",
                               "params": {
                                 "missingBucket": false,
@@ -484,7 +485,7 @@
                                 "size": 100
                               },
                               "scale": "ordinal",
-                              "sourceField": "alphasoc.wisdom.flags"
+                              "sourceField": "alphasoc.event.src.ip"
                             },
                             "8873fef6-4e47-4282-996c-bb0483b64857": {
                               "customLabel": true,
@@ -495,10 +496,9 @@
                               "params": {
                                 "missingBucket": false,
                                 "orderBy": {
-                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
-                                  "type": "column"
+                                  "type": "alphabetical"
                                 },
-                                "orderDirection": "desc",
+                                "orderDirection": "asc",
                                 "otherBucket": false,
                                 "size": 100
                               },
@@ -514,10 +514,9 @@
                               "params": {
                                 "missingBucket": false,
                                 "orderBy": {
-                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
-                                  "type": "column"
+                                  "type": "alphabetical"
                                 },
-                                "orderDirection": "desc",
+                                "orderDirection": "asc",
                                 "otherBucket": false,
                                 "size": 100
                               },
@@ -533,10 +532,9 @@
                               "params": {
                                 "missingBucket": false,
                                 "orderBy": {
-                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
-                                  "type": "column"
+                                  "type": "alphabetical"
                                 },
-                                "orderDirection": "desc",
+                                "orderDirection": "asc",
                                 "otherBucket": false,
                                 "size": 100
                               },
@@ -560,10 +558,9 @@
                               "params": {
                                 "missingBucket": false,
                                 "orderBy": {
-                                  "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
-                                  "type": "column"
+                                  "type": "alphabetical"
                                 },
-                                "orderDirection": "desc",
+                                "orderDirection": "asc",
                                 "otherBucket": false,
                                 "size": 100
                               },
@@ -588,22 +585,30 @@
                         "hidden": true
                       },
                       {
-                        "columnId": "8873fef6-4e47-4282-996c-bb0483b64857"
+                        "columnId": "8873fef6-4e47-4282-996c-bb0483b64857",
+                        "width": 185.53333333333336
                       },
                       {
-                        "columnId": "aae29ffd-b8b6-4c45-ade4-586d9d9ed4a4"
+                        "columnId": "aae29ffd-b8b6-4c45-ade4-586d9d9ed4a4",
+                        "width": 543.0333333333333
                       },
                       {
-                        "columnId": "a9761f39-647e-4667-a952-fa08671d1512"
+                        "columnId": "a9761f39-647e-4667-a952-fa08671d1512",
+                        "width": 93.19999999999999
                       },
                       {
                         "columnId": "f60d47f8-d93d-4e3b-898d-cd63e633cd6e"
                       },
                       {
-                        "columnId": "10598d86-6dd7-4151-9b02-eb4bba8820d5"
+                        "columnId": "7239e8fb-774e-409b-a995-f9aa51903bc4",
+                        "width": 133.2
                       }
                     ],
-                    "layerId": "363ef9c0-35dd-4274-9dcc-35908b10af99"
+                    "layerId": "363ef9c0-35dd-4274-9dcc-35908b10af99",
+                    "sorting": {
+                      "columnId": "8873fef6-4e47-4282-996c-bb0483b64857",
+                      "direction": "desc"
+                    }
                   }
                 },
                 "title": "",
@@ -614,180 +619,20 @@
               "hidePanelTitles": false
             },
             "gridData": {
-              "h": 14,
+              "h": 26,
               "i": "94310799-6a3b-43eb-943f-822d62c43868",
               "w": 48,
               "x": 0,
               "y": 0
             },
             "panelIndex": "94310799-6a3b-43eb-943f-822d62c43868",
-            "title": "Threats with destination",
-            "type": "lens",
-            "version": "7.12.0"
-          },
-          {
-            "embeddableConfig": {
-              "attributes": {
-                "references": [
-                  {
-                    "id": "alphasocbeat-*",
-                    "name": "indexpattern-datasource-current-indexpattern",
-                    "type": "index-pattern"
-                  },
-                  {
-                    "id": "alphasocbeat-*",
-                    "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
-                    "type": "index-pattern"
-                  }
-                ],
-                "state": {
-                  "datasourceStates": {
-                    "indexpattern": {
-                      "layers": {
-                        "363ef9c0-35dd-4274-9dcc-35908b10af99": {
-                          "columnOrder": [
-                            "8873fef6-4e47-4282-996c-bb0483b64857",
-                            "a9761f39-647e-4667-a952-fa08671d1512",
-                            "f60d47f8-d93d-4e3b-898d-cd63e633cd6e",
-                            "10598d86-6dd7-4151-9b02-eb4bba8820d5",
-                            "d56b97af-5a0a-4f95-ba92-7efe3ada352f"
-                          ],
-                          "columns": {
-                            "10598d86-6dd7-4151-9b02-eb4bba8820d5": {
-                              "customLabel": true,
-                              "dataType": "string",
-                              "isBucketed": true,
-                              "label": "Flag",
-                              "operationType": "terms",
-                              "params": {
-                                "missingBucket": false,
-                                "orderBy": {
-                                  "type": "alphabetical"
-                                },
-                                "orderDirection": "asc",
-                                "otherBucket": false,
-                                "size": 100
-                              },
-                              "scale": "ordinal",
-                              "sourceField": "alphasoc.wisdom.flags"
-                            },
-                            "8873fef6-4e47-4282-996c-bb0483b64857": {
-                              "customLabel": true,
-                              "dataType": "string",
-                              "isBucketed": true,
-                              "label": "Timestamp",
-                              "operationType": "terms",
-                              "params": {
-                                "missingBucket": false,
-                                "orderBy": {
-                                  "type": "alphabetical"
-                                },
-                                "orderDirection": "asc",
-                                "otherBucket": false,
-                                "size": 100
-                              },
-                              "scale": "ordinal",
-                              "sourceField": "alphasoc.event.ts"
-                            },
-                            "a9761f39-647e-4667-a952-fa08671d1512": {
-                              "customLabel": true,
-                              "dataType": "string",
-                              "isBucketed": true,
-                              "label": "Pipeline",
-                              "operationType": "terms",
-                              "params": {
-                                "missingBucket": false,
-                                "orderBy": {
-                                  "type": "alphabetical"
-                                },
-                                "orderDirection": "asc",
-                                "otherBucket": false,
-                                "size": 100
-                              },
-                              "scale": "ordinal",
-                              "sourceField": "alphasoc.pipeline"
-                            },
-                            "d56b97af-5a0a-4f95-ba92-7efe3ada352f": {
-                              "dataType": "number",
-                              "isBucketed": false,
-                              "label": "Count of records",
-                              "operationType": "count",
-                              "scale": "ratio",
-                              "sourceField": "Records"
-                            },
-                            "f60d47f8-d93d-4e3b-898d-cd63e633cd6e": {
-                              "customLabel": true,
-                              "dataType": "string",
-                              "isBucketed": true,
-                              "label": "Threat",
-                              "operationType": "terms",
-                              "params": {
-                                "missingBucket": false,
-                                "orderBy": {
-                                  "type": "alphabetical"
-                                },
-                                "orderDirection": "asc",
-                                "otherBucket": false,
-                                "size": 100
-                              },
-                              "scale": "ordinal",
-                              "sourceField": "alphasoc.threat.title"
-                            }
-                          },
-                          "incompleteColumns": {}
-                        }
-                      }
-                    }
-                  },
-                  "filters": [],
-                  "query": {
-                    "language": "kuery",
-                    "query": ""
-                  },
-                  "visualization": {
-                    "columns": [
-                      {
-                        "columnId": "d56b97af-5a0a-4f95-ba92-7efe3ada352f",
-                        "hidden": true
-                      },
-                      {
-                        "columnId": "8873fef6-4e47-4282-996c-bb0483b64857"
-                      },
-                      {
-                        "columnId": "a9761f39-647e-4667-a952-fa08671d1512"
-                      },
-                      {
-                        "columnId": "f60d47f8-d93d-4e3b-898d-cd63e633cd6e"
-                      },
-                      {
-                        "columnId": "10598d86-6dd7-4151-9b02-eb4bba8820d5"
-                      }
-                    ],
-                    "layerId": "363ef9c0-35dd-4274-9dcc-35908b10af99"
-                  }
-                },
-                "title": "",
-                "type": "lens",
-                "visualizationType": "lnsDatatable"
-              },
-              "enhancements": {},
-              "hidePanelTitles": false
-            },
-            "gridData": {
-              "h": 14,
-              "i": "b4952130-ecfa-43f9-a453-af265687ad43",
-              "w": 48,
-              "x": 0,
-              "y": 14
-            },
-            "panelIndex": "b4952130-ecfa-43f9-a453-af265687ad43",
             "title": "Threats",
             "type": "lens",
             "version": "7.12.0"
           }
         ],
         "timeRestore": false,
-        "title": "[AlphaSOC] Details",
+        "title": "AlphaSOC Detailed View",
         "version": 1
       },
       "coreMigrationVersion": "7.12.0",
@@ -808,21 +653,11 @@
           "id": "alphasocbeat-*",
           "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
           "type": "index-pattern"
-        },
-        {
-          "id": "alphasocbeat-*",
-          "name": "indexpattern-datasource-current-indexpattern",
-          "type": "index-pattern"
-        },
-        {
-          "id": "alphasocbeat-*",
-          "name": "indexpattern-datasource-layer-363ef9c0-35dd-4274-9dcc-35908b10af99",
-          "type": "index-pattern"
         }
       ],
       "type": "dashboard",
-      "updated_at": "2021-04-27T12:26:54.876Z",
-      "version": "WzIxOTUzLDI0XQ=="
+      "updated_at": "2021-04-28T13:07:53.006Z",
+      "version": "WzIzMTY0LDI1XQ=="
     }
   ],
   "version": "7.12.0"
