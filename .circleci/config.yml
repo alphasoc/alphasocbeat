@@ -39,8 +39,8 @@ jobs:
           name: publish
           command: |
             go get github.com/aktau/github-release
-            github-release release -v --draft --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG
-            github-release upload -v --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64 --file bin/alphasocbeat-linux-amd64
+            github-release -v release --draft --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG
+            github-release -v upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64 --file bin/alphasocbeat-linux-amd64
 
 workflows:
   version: 2
