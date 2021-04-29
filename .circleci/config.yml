@@ -19,13 +19,22 @@ jobs:
       - run:
           name: build
           command: |
-            GOARCH=amd64 GOOS=linux   go build -o /tmp/bin/alphasocbeat-linux-amd64
-            GOARCH=amd64 GOOS=windows go build -o /tmp/bin/alphasocbeat-windows-amd64.exe
-            GOARCH=amd64 GOOS=darwin  go build -o /tmp/bin/alphasocbeat-darwin-amd64
+            GOARCH=amd64 GOOS=linux   go build -o alphasocbeat-linux-amd64
+            GOARCH=amd64 GOOS=windows go build -o alphasocbeat-windows-amd64.exe
+            GOARCH=amd64 GOOS=darwin  go build -o alphasocbeat-darwin-amd64
+      - run:
+          name: make packages
+          command: |
+            mkdir -p kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json kibana/7/dashboard/Alphasocbeat-dashboards.json
+            tar -cvzf alphasocbeat-linux-amd64.tar.gz alphasocbeat-linux-amd64 alphasocbeat.yml kibana/
+            zip alphasocbeat-windows-amd64.zip alphasocbeat-windows-amd64.exe alphasocbeat.yml kibana/7/dashboard/Alphasocbeat-dashboards.json
+            tar -cvzf alphasocbeat-darwin-amd64.tar.gz alphasocbeat-darwin-amd64 alphasocbeat.yml kibana/
       - persist_to_workspace:
-          root: /tmp
+          root: .
           paths:
-            - bin
+            - alphasocbeat-linux-amd64.tar.gz
+            - alphasocbeat-windows-amd64.zip
+            - alphasocbeat-darwin-amd64.tar.gz
   
   publish:
     docker:
@@ -39,9 +48,9 @@ jobs:
           command: |
             go get github.com/aktau/github-release
             github-release release --draft --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG
-            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64       --file bin/alphasocbeat-linux-amd64
-            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-windows-amd64.exe --file bin/alphasocbeat-windows-amd64.exe
-            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-darwin-amd64      --file bin/alphasocbeat-darwin-amd64
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-linux-amd64.tar.gz  --file alphasocbeat-linux-amd64.tar.gz
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-windows-amd64.zip   --file alphasocbeat-windows-amd64.zip
+            github-release upload --user alphasoc --repo alphasocbeat --tag $CIRCLE_TAG --name alphasocbeat-darwin-amd64.tar.gz --file alphasocbeat-darwin-amd64.tar.gz
 
 workflows:
   version: 2
