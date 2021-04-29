@@ -29,6 +29,10 @@ jobs:
             mkdir -p alphasocbeat-windows-amd64/alphasocbeat/kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json alphasocbeat-windows-amd64/alphasocbeat/kibana/7/dashboard/Alphasocbeat-dashboards.json
             mkdir -p alphasocbeat-darwin-amd64/alphasocbeat/kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json alphasocbeat-darwin-amd64/alphasocbeat/kibana/7/dashboard/Alphasocbeat-dashboards.json
 
+            cp alphasocbeat.yml alphasocbeat-linux-amd64/alphasocbeat
+            cp alphasocbeat.yml alphasocbeat-windows-amd64/alphasocbeat
+            cp alphasocbeat.yml alphasocbeat-darwin-amd64/alphasocbeat
+
             (cd alphasocbeat-linux-amd64 && tar -czf ../alphasocbeat-linux-amd64.tar.gz alphasocbeat/*)
             (cd alphasocbeat-windows-amd64 && zip -r ../alphasocbeat-windows-amd64.zip alphasocbeat/* )
             (cd alphasocbeat-darwin-amd64 && tar -czf ../alphasocbeat-darwin-amd64.tar.gz alphasocbeat/*)
