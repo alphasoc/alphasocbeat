@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 	"time"
 
 	"github.com/elastic/beats/v7/libbeat/beat"
@@ -15,6 +16,8 @@ import (
 	"github.com/alphasoc/alphasocbeat/checkpoint"
 	"github.com/alphasoc/alphasocbeat/config"
 )
+
+const APIPath = "/v1/alerts"
 
 // alphasocbeat configuration.
 type alphasocbeat struct {
@@ -69,8 +72,10 @@ func (bt *alphasocbeat) Run(b *beat.Beat) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Add("Content-Encoding", "gzip")
+
+	req.URL.Path = path.Join(req.URL.Path, APIPath)
 	req.URL.User = url.User(bt.apiKey)
+	req.Header.Add("Content-Encoding", "gzip")
 
 	back := backoff.NewExpBackoff(bt.done, 1*time.Second, 60*time.Second)
 	for {

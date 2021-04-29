@@ -72,6 +72,10 @@ func (ar *alertResponse) beatEvents() []beat.Event {
 					if k == "destIP" && a.Type == "ip" {
 						beatEvent.Fields["alphasoc.event.dest.ip_raw"] = v
 					}
+
+					if k == "url" && a.Type == "http" {
+						beatEvent.Fields["alphasoc.event.dest.url_raw"] = v
+					}
 				}
 			}
 

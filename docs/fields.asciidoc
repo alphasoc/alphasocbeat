@@ -122,6 +122,13 @@ alias to: url.original
 
 --
 
+*`alphasoc.event.dest.url_raw`*::
++
+--
+type: keyword
+
+--
+
 *`alphasoc.event.ts`*::
 +
 --

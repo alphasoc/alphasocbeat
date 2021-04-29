@@ -1,10 +1,9 @@
 alphasocbeat:
   registry_file: checkpoint.yaml
-  api_url: https://api.alphasoc.net/v1/alerts
+  api_url: https://api.alphasoc.net
   api_key: <api_key>
 
 setup.dashboards.enabled: true
-setup.dashboards.directory: _meta/kibana.generated
 processors:
   - add_cloud_metadata: ~
   - add_docker_metadata: ~

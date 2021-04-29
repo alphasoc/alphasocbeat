@@ -44,6 +44,9 @@
         - name: url
           type: alias
           path: url.original
+        - name: url_raw
+          type: keyword
+          copy_to: alphasoc.destination
       - name: ts
         type: keyword
       - name: query
