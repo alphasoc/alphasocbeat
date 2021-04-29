@@ -19,16 +19,19 @@ jobs:
       - run:
           name: build
           command: |
-            GOARCH=amd64 GOOS=linux   go build -o alphasocbeat-linux-amd64
-            GOARCH=amd64 GOOS=windows go build -o alphasocbeat-windows-amd64.exe
-            GOARCH=amd64 GOOS=darwin  go build -o alphasocbeat-darwin-amd64
+            GOARCH=amd64 GOOS=linux   go build -o alphasocbeat-linux-amd64/alphasocbeat/alphasocbeat
+            GOARCH=amd64 GOOS=windows go build -o alphasocbeat-windows-amd64/alphasocbeat/alphasocbeat.exe
+            GOARCH=amd64 GOOS=darwin  go build -o alphasocbeat-darwin-amd64/alphasocbeat/alphasocbeat
       - run:
           name: make packages
           command: |
-            mkdir -p kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json kibana/7/dashboard/Alphasocbeat-dashboards.json
-            tar -cvzf alphasocbeat-linux-amd64.tar.gz alphasocbeat-linux-amd64 alphasocbeat.yml kibana/
-            zip alphasocbeat-windows-amd64.zip alphasocbeat-windows-amd64.exe alphasocbeat.yml kibana/7/dashboard/Alphasocbeat-dashboards.json
-            tar -cvzf alphasocbeat-darwin-amd64.tar.gz alphasocbeat-darwin-amd64 alphasocbeat.yml kibana/
+            mkdir -p alphasocbeat-linux-amd64/alphasocbeat/kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json alphasocbeat-linux-amd64/alphasocbeat/kibana/7/dashboard/Alphasocbeat-dashboards.json
+            mkdir -p alphasocbeat-windows-amd64/alphasocbeat/kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json alphasocbeat-windows-amd64/alphasocbeat/kibana/7/dashboard/Alphasocbeat-dashboards.json
+            mkdir -p alphasocbeat-darwin-amd64/alphasocbeat/kibana/7/dashboard && cp _meta/kibana.generated/7/dashboard/Alphasocbeat-dashboards.json alphasocbeat-darwin-amd64/alphasocbeat/kibana/7/dashboard/Alphasocbeat-dashboards.json
+
+            (cd alphasocbeat-linux-amd64 && tar -czf ../alphasocbeat-linux-amd64.tar.gz alphasocbeat/*)
+            (cd alphasocbeat-windows-amd64 && zip -r ../alphasocbeat-windows-amd64.zip alphasocbeat/* )
+            (cd alphasocbeat-darwin-amd64 && tar -czf ../alphasocbeat-darwin-amd64.tar.gz alphasocbeat/*)
       - persist_to_workspace:
           root: .
           paths:
