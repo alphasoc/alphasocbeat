@@ -42,10 +42,3 @@ var eventFields = map[string]string{
 	"validFrom": "alphasoc.event.valid_from",
 	"validTo":   "alphasoc.event.valid_to",
 }
-
-// eventFields is map of json wisdom fields names with matching elastic index field name value
-var wisdomFields = map[string]string{
-	"domain": "destination.domain",
-	"flags":  "alphasoc.wisdom.flags",
-	"labels": "alphasoc.wisdom.labels",
-}
