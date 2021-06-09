@@ -91,8 +91,8 @@ github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuy
 github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=
 github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
-github.com/alphasoc/alphasoc-go v0.0.0-20210608111827-101216964489 h1:m9Hzw7cr9gf0f7PtiEcMvKvYzMT6J5CMFZnLpqf19Ak=
-github.com/alphasoc/alphasoc-go v0.0.0-20210608111827-101216964489/go.mod h1:Yb/iP2BI+x120gKVZ7/2c52H4GoAKcf5Ud2X1G9Bilk=
+github.com/alphasoc/alphasoc-go v0.0.0-20210609094814-c7b9081b5a64 h1:6IJ8v1NGZwvInkwuUA9IFaIn9vuPdyAtixucUw1EBMo=
+github.com/alphasoc/alphasoc-go v0.0.0-20210609094814-c7b9081b5a64/go.mod h1:Yb/iP2BI+x120gKVZ7/2c52H4GoAKcf5Ud2X1G9Bilk=
 github.com/andrewkroh/goja v0.0.0-20190128172624-dd2ac4456e20 h1:7rj9qZ63knnVo2ZeepYHvHuRdG76f3tRUTdIQDzRBeI=
 github.com/andrewkroh/goja v0.0.0-20190128172624-dd2ac4456e20/go.mod h1:cI59GRkC2FRaFYtgbYEqMlgnnfvAwXzjojyZKXwklNg=
 github.com/andrewkroh/sys v0.0.0-20151128191922-287798fe3e43/go.mod h1:tJPYQG4mnMeUtQvQKNkbsFrnmZOg59Qnf8CcctFv5v4=

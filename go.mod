@@ -22,7 +22,7 @@ replace (
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect
-	github.com/alphasoc/alphasoc-go v0.0.0-20210608111827-101216964489
+	github.com/alphasoc/alphasoc-go v0.0.0-20210609094814-c7b9081b5a64
 	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/elastic/beats/v7 v7.12.1-0.20210426103842-ec2c242244d8
 	github.com/elastic/go-sysinfo v1.7.0 // indirect

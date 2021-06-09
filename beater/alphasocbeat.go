@@ -50,6 +50,8 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 		log:        logp.NewLogger("alphasocbeat"),
 	}
 
+	bt.apiClient.SetTimeout(15 * time.Second)
+
 	return bt, nil
 }
 
