@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alphasoc/alphasoc-go"
+	"github.com/alphasoc/alphasoc-go/models"
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
@@ -37,17 +37,17 @@ func boolPtr(b bool) *bool {
 }
 
 func TestBeatEvents_DNSEvents(t *testing.T) {
-	resp := &alphasoc.Alerts{
+	resp := &models.Alerts{
 		Follow: stringPtr("6-8263d641"), More: boolPtr(true),
-		Alerts: &[]alphasoc.Alert{
+		Alerts: &[]models.Alert{
 			{
 				EventType: stringPtr("dns"),
 				Event:     []byte(`{"ts": "2021-04-07T09:55:37Z", "srcIP": "10.14.1.39", "srcHost": "win-3xchk5-lp", "srcMac": "da:23:68:50:c4:77", "query": "hsxfrfokdkojcj.net", "qtype": "A"}`),
 				Threats:   &[]string{"suspicious_domain_volume", "unreachable_domain_volume"},
-				Wisdom:    &alphasoc.Wisdom{Flags: &[]string{"perplexing_domain", "unique", "unreachable_domain"}, Domain: stringPtr("hsxfrfokdkojcj.net")},
+				Wisdom:    &models.Wisdom{Flags: &[]string{"perplexing_domain", "unique", "unreachable_domain"}, Domain: stringPtr("hsxfrfokdkojcj.net")},
 			},
 		},
-		Threats: &map[string]alphasoc.Threat{
+		Threats: &map[string]models.Threat{
 			"suspicious_domain_volume":  {Title: "Multiple requests to suspicious domains", Severity: 3},
 			"unreachable_domain_volume": {Title: "Multiple requests to unreachable domains", Severity: 2},
 		},
@@ -126,17 +126,17 @@ func TestBeatEvents_DNSEvents(t *testing.T) {
 }
 
 func TestBeatEvents_IPEvent(t *testing.T) {
-	resp := &alphasoc.Alerts{
+	resp := &models.Alerts{
 		Follow: stringPtr("6-8263d641"), More: boolPtr(true),
-		Alerts: &[]alphasoc.Alert{
+		Alerts: &[]models.Alert{
 			{
 				EventType: stringPtr("ip"),
 				Event:     []byte(`{"ts": "2021-04-07T09:57:17Z", "srcIP": "10.100.92.3", "srcPort": 52065, "srcUser": "danknicholas", "destIP": "50.116.17.41", "destPort": 8009, "proto": "tcp", "bytesIn": 27307, "bytesOut": 5419, "app": "tls1.3", "action": "allowed", "duration": 2.48475075448}`),
 				Threats:   &[]string{"sinkholed_destination"},
-				Wisdom:    &alphasoc.Wisdom{Flags: &[]string{"sinkholed", "unusual_port"}},
+				Wisdom:    &models.Wisdom{Flags: &[]string{"sinkholed", "unusual_port"}},
 			},
 		},
-		Threats: &map[string]alphasoc.Threat{
+		Threats: &map[string]models.Threat{
 			"sinkholed_destination": {Title: "Traffic to a known sinkhole indicating infection", Severity: 4},
 		},
 	}
@@ -193,17 +193,17 @@ func TestBeatEvents_IPEvent(t *testing.T) {
 }
 
 func TestBeatEvents_TLSEvent(t *testing.T) {
-	resp := &alphasoc.Alerts{
+	resp := &models.Alerts{
 		Follow: stringPtr("6-8263d641"), More: boolPtr(true),
-		Alerts: &[]alphasoc.Alert{
+		Alerts: &[]models.Alert{
 			{
 				EventType: stringPtr("tls"),
 				Event:     []byte(`{"ts": "2021-04-07T09:58:18Z", "srcIP": "10.36.86.38", "srcPort": 57849, "certHash": "9fcc5c1e8ec32f56e975ba43c923dbfa16a8f946", "issuer": "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US", "subject": "C=US,ST=TX,L=Texas,O=lol,OU=,CN=topbackupintheworld.com", "validFrom": "2021-03-30T00:34:02Z", "validTo": "2021-05-29T00:34:02Z", "destIP": "", "destPort": 0,"ja3": "724dedf93fb5a3636a0f1ee8fcec8801", "ja3s": "015535be754766257f9bfdf3470cd428e0f1cfd4"}`),
 				Threats:   &[]string{"c2_communication"},
-				Wisdom:    &alphasoc.Wisdom{Flags: &[]string{"c2"}, Labels: &[]string{"c2:Cobalt Strike", "c2:Ryuk"}},
+				Wisdom:    &models.Wisdom{Flags: &[]string{"c2"}, Labels: &[]string{"c2:Cobalt Strike", "c2:Ryuk"}},
 			},
 		},
-		Threats: &map[string]alphasoc.Threat{
+		Threats: &map[string]models.Threat{
 			"c2_communication": {Title: "C2 communication attempt indicating infection", Severity: 5},
 		},
 	}

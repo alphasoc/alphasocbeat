@@ -1,6 +1,7 @@
 package beater
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"github.com/elastic/beats/v7/libbeat/logp"
 
 	"github.com/alphasoc/alphasoc-go"
+	"github.com/alphasoc/alphasoc-go/models"
 	"github.com/alphasoc/alphasocbeat/checkpoint"
 	"github.com/alphasoc/alphasocbeat/config"
 )
@@ -42,15 +44,18 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 		return nil, fmt.Errorf("creating checkpoint: %w", err)
 	}
 
+	apiClient, err := alphasoc.New(alphasoc.WithAPIKey(c.APIKey))
+	if err != nil {
+		return nil, fmt.Errorf("creating api client: %ws", err)
+	}
+
 	bt := &alphasocbeat{
 		done:       make(chan struct{}),
 		config:     c,
 		checkpoint: cp,
-		apiClient:  alphasoc.NewClient(c.APIKey),
+		apiClient:  apiClient,
 		log:        logp.NewLogger("alphasocbeat"),
 	}
-
-	bt.apiClient.SetTimeout(15 * time.Second)
 
 	return bt, nil
 }
@@ -73,7 +78,10 @@ func (bt *alphasocbeat) Run(b *beat.Beat) error {
 			return nil
 		}
 
-		alerts, err := bt.apiClient.GetAlerts(follow)
+		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+
+		alerts, err := bt.apiClient.Alerts(ctx, follow)
+		cancel()
 		if err != nil {
 			if asocErr, ok := err.(alphasoc.APIError); ok {
 				if asocErr.StatusCode == http.StatusTooManyRequests {
@@ -103,7 +111,7 @@ func (bt *alphasocbeat) Stop() {
 
 // beatEvents converts alerts to beat events
 // with proper index fields mapping
-func (bt *alphasocbeat) beatEvents(alerts *alphasoc.Alerts) []beat.Event {
+func (bt *alphasocbeat) beatEvents(alerts *models.Alerts) []beat.Event {
 	events := []beat.Event{}
 
 	for _, a := range *alerts.Alerts {

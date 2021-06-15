@@ -22,7 +22,7 @@ replace (
 
 require (
 	github.com/akavel/rsrc v0.10.2 // indirect
-	github.com/alphasoc/alphasoc-go v0.0.0-20210609094814-c7b9081b5a64
+	github.com/alphasoc/alphasoc-go v0.1.0
 	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/elastic/beats/v7 v7.12.1-0.20210426103842-ec2c242244d8
 	github.com/elastic/go-sysinfo v1.7.0 // indirect
@@ -47,6 +47,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210421170649-83a5a9bb288b // indirect
 	golang.org/x/lint v0.0.0-20201208152925-83fdc39ff7b5
 	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect
+	golang.org/x/oauth2 v0.0.0-20210427180440-81ed05c6b58c // indirect
 	golang.org/x/sys v0.0.0-20210426080607-c94f62235c83 // indirect
 	golang.org/x/tools v0.1.0
 	gopkg.in/yaml.v2 v2.4.0
