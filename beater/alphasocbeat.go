@@ -1,11 +1,10 @@
 package beater
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
-	"path"
 	"time"
 
 	"github.com/elastic/beats/v7/libbeat/beat"
@@ -13,6 +12,8 @@ import (
 	"github.com/elastic/beats/v7/libbeat/common/backoff"
 	"github.com/elastic/beats/v7/libbeat/logp"
 
+	"github.com/alphasoc/alphasoc-go"
+	"github.com/alphasoc/alphasoc-go/models"
 	"github.com/alphasoc/alphasocbeat/checkpoint"
 	"github.com/alphasoc/alphasocbeat/config"
 )
@@ -26,8 +27,7 @@ type alphasocbeat struct {
 	client     beat.Client
 	checkpoint *checkpoint.Checkpoint
 
-	apiURL string
-	apiKey string
+	apiClient *alphasoc.Client
 
 	log *logp.Logger
 }
@@ -44,12 +44,16 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 		return nil, fmt.Errorf("creating checkpoint: %w", err)
 	}
 
+	apiClient, err := alphasoc.New(alphasoc.WithAPIKey(c.APIKey))
+	if err != nil {
+		return nil, fmt.Errorf("creating api client: %ws", err)
+	}
+
 	bt := &alphasocbeat{
 		done:       make(chan struct{}),
 		config:     c,
 		checkpoint: cp,
-		apiURL:     c.APIURL,
-		apiKey:     c.APIKey,
+		apiClient:  apiClient,
 		log:        logp.NewLogger("alphasocbeat"),
 	}
 
@@ -68,54 +72,34 @@ func (bt *alphasocbeat) Run(b *beat.Beat) error {
 
 	follow := bt.checkpoint.State()
 
-	req, err := http.NewRequest("GET", bt.apiURL, nil)
-	if err != nil {
-		return err
-	}
-
-	req.URL.Path = path.Join(req.URL.Path, APIPath)
-	req.URL.User = url.User(bt.apiKey)
-	req.Header.Add("Content-Encoding", "gzip")
-
 	back := backoff.NewExpBackoff(bt.done, 1*time.Second, 60*time.Second)
 	for {
 		if !back.Wait() {
 			return nil
 		}
 
-		q := req.URL.Query()
-		q.Del("follow")
-		if follow != "" {
-			q.Add("follow", follow)
-			req.URL.RawQuery = q.Encode()
-		}
+		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 
-		resp, err := http.DefaultClient.Do(req)
+		alerts, err := bt.apiClient.Alerts(ctx, follow)
+		cancel()
 		if err != nil {
-			bt.log.Errorw("http.Do", logp.Error(err))
-			continue
+			if asocErr, ok := err.(alphasoc.APIError); ok {
+				if asocErr.StatusCode == http.StatusTooManyRequests {
+					continue
+				}
+			}
+
+			return fmt.Errorf("retrieving alerts: %w", err)
 		}
 
-		if resp.StatusCode == http.StatusTooManyRequests {
-			continue
-		} else if resp.StatusCode != http.StatusOK {
-			return fmt.Errorf("response status code is not 200, got %v", resp.Status)
-		}
-
-		body := &alertResponse{Alerts: &[]eventAlert{}}
-		d := json.NewDecoder(resp.Body)
-		if err := d.Decode(body); err != nil {
-			return fmt.Errorf("json.Decode: %w", err)
-		}
-
-		follow = body.Follow
+		follow = alerts.GetFollow()
 		bt.checkpoint.Persist(follow)
 
-		bt.client.PublishAll(body.beatEvents())
-
-		if body.More {
+		if alerts.GetMore() {
 			back.Reset()
 		}
+
+		bt.client.PublishAll(bt.beatEvents(alerts))
 	}
 }
 
@@ -123,4 +107,78 @@ func (bt *alphasocbeat) Run(b *beat.Beat) error {
 func (bt *alphasocbeat) Stop() {
 	bt.client.Close()
 	close(bt.done)
+}
+
+// beatEvents converts alerts to beat events
+// with proper index fields mapping
+func (bt *alphasocbeat) beatEvents(alerts *models.Alerts) []beat.Event {
+	events := []beat.Event{}
+
+	for _, a := range *alerts.Alerts {
+		// parse event as map[string]interface{}
+		event := map[string]interface{}{}
+		err := json.Unmarshal(a.Event, &event)
+		if err != nil {
+			bt.log.Errorf("parsing event", err)
+			continue
+		}
+
+		// Create separate document for each threat
+		for _, threat := range *a.Threats {
+			// Parse event timestamp
+			ts := time.Now()
+			t, ok := event["ts"]
+			if ok {
+				parsed, err := time.Parse(time.RFC3339, t.(string))
+				if err == nil {
+					ts = parsed
+				}
+			}
+
+			beatEvent := beat.Event{
+				Timestamp: ts,
+				Fields: common.MapStr{
+					"alphasoc.event.ts": ts.Format("2006-01-02 15:04:05"),
+					"alphasoc.pipeline": a.GetEventType(),
+				},
+			}
+
+			// Add known event fields values
+			for k, v := range event {
+				if v == "" {
+					continue
+				}
+
+				if mappedKey, ok := eventFields[k]; ok {
+					beatEvent.Fields[mappedKey] = v
+
+					if k == "destIP" && a.GetEventType() == "ip" {
+						beatEvent.Fields["alphasoc.event.dest.ip_raw"] = v
+					}
+
+					if k == "url" && a.GetEventType() == "http" {
+						beatEvent.Fields["alphasoc.event.dest.url_raw"] = v
+					}
+				}
+			}
+
+			// Add wisdom fields
+			if a.Wisdom != nil {
+				beatEvent.Fields["destination.domain"] = a.Wisdom.Domain
+				beatEvent.Fields["alphasoc.wisdom.flags"] = a.Wisdom.Flags
+				beatEvent.Fields["alphasoc.wisdom.labels"] = a.Wisdom.Labels
+			}
+
+			// Add threat fields
+			beatEvent.Fields["alphasoc.threat.value"] = threat
+			if t, ok := (*alerts.Threats)[threat]; ok {
+				beatEvent.Fields["alphasoc.threat.severity"] = t.Severity
+				beatEvent.Fields["alphasoc.threat.title"] = t.Title
+			}
+
+			events = append(events, beatEvent)
+		}
+	}
+
+	return events
 }

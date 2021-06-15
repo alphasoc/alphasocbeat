@@ -2,63 +2,60 @@ package beater
 
 import (
 	"encoding/json"
-	"strings"
 	"testing"
 	"time"
 
+	"github.com/alphasoc/alphasoc-go/models"
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
+	"github.com/elastic/beats/v7/libbeat/logp"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBeatEvents_DNSEvents(t *testing.T) {
-	response := `{
-		"follow": "6-8263d641",
-		"more": true,
-		"alerts": [
-		  {
-			"eventType": "dns",
-			"event": {
-			  "ts": "2021-04-07T09:55:37Z",
-			  "srcIP": "10.14.1.39",
-			  "srcHost": "win-3xchk5-lp",
-			  "srcMac": "da:23:68:50:c4:77",
-			  "query": "hsxfrfokdkojcj.net",
-			  "qtype": "A"
-			},
-			"threats": [
-			  "suspicious_domain_volume",
-			  "unreachable_domain_volume"
-			],
-			"wisdom": {
-			  "flags": [
-				"perplexing_domain",
-				"unique",
-				"unreachable_domain"
-			  ],
-			  "domain": "hsxfrfokdkojcj.net"
-			}
-		  }
-		],
-		"threats": {
-			"suspicious_domain_volume": {
-				"title": "Multiple requests to suspicious domains",
-				"severity": 3
-			},
-			"unreachable_domain_volume": {
-				"title": "Multiple requests to unreachable domains",
-				"severity": 2
-			}
-		}
-	}`
+func stringPtr(s string) *string {
+	return &s
+}
 
-	body := &alertResponse{Alerts: &[]eventAlert{}}
-	d := json.NewDecoder(strings.NewReader(response))
-	if err := d.Decode(body); err != nil {
-		t.Fatal("cannot decode response", err)
+func timePtr(t time.Time) *time.Time {
+	return &t
+}
+
+func int32Ptr(i int32) *int32 {
+	return &i
+}
+
+func int64Ptr(i int64) *int64 {
+	return &i
+}
+
+func float64Ptr(f float64) *float64 {
+	return &f
+}
+
+func boolPtr(b bool) *bool {
+	return &b
+}
+
+func TestBeatEvents_DNSEvents(t *testing.T) {
+	resp := &models.Alerts{
+		Follow: stringPtr("6-8263d641"), More: boolPtr(true),
+		Alerts: &[]models.Alert{
+			{
+				EventType: stringPtr("dns"),
+				Event:     []byte(`{"ts": "2021-04-07T09:55:37Z", "srcIP": "10.14.1.39", "srcHost": "win-3xchk5-lp", "srcMac": "da:23:68:50:c4:77", "query": "hsxfrfokdkojcj.net", "qtype": "A"}`),
+				Threats:   &[]string{"suspicious_domain_volume", "unreachable_domain_volume"},
+				Wisdom:    &models.Wisdom{Flags: &[]string{"perplexing_domain", "unique", "unreachable_domain"}, Domain: stringPtr("hsxfrfokdkojcj.net")},
+			},
+		},
+		Threats: &map[string]models.Threat{
+			"suspicious_domain_volume":  {Title: "Multiple requests to suspicious domains", Severity: 3},
+			"unreachable_domain_volume": {Title: "Multiple requests to unreachable domains", Severity: 2},
+		},
 	}
 
-	events := body.beatEvents()
+	bt := &alphasocbeat{log: logp.L()}
+
+	events := bt.beatEvents(resp)
 
 	if len(events) != 2 {
 		t.Fatalf("expected 2 events, got %v", len(events))
@@ -72,7 +69,7 @@ func TestBeatEvents_DNSEvents(t *testing.T) {
 				"alphasoc.pipeline": "dns",
 
 				"alphasoc.threat.value":    "suspicious_domain_volume",
-				"alphasoc.threat.severity": severity(3),
+				"alphasoc.threat.severity": 3,
 				"alphasoc.threat.title":    "Multiple requests to suspicious domains",
 
 				"source.ip":            "10.14.1.39",
@@ -85,7 +82,8 @@ func TestBeatEvents_DNSEvents(t *testing.T) {
 					"perplexing_domain",
 					"unique",
 					"unreachable_domain"},
-				"destination.domain": "hsxfrfokdkojcj.net",
+				"destination.domain":     "hsxfrfokdkojcj.net",
+				"alphasoc.wisdom.labels": interface{}(nil),
 			},
 		},
 		{
@@ -95,7 +93,7 @@ func TestBeatEvents_DNSEvents(t *testing.T) {
 				"alphasoc.pipeline": "dns",
 
 				"alphasoc.threat.value":    "unreachable_domain_volume",
-				"alphasoc.threat.severity": severity(2),
+				"alphasoc.threat.severity": 2,
 				"alphasoc.threat.title":    "Multiple requests to unreachable domains",
 
 				"source.ip":            "10.14.1.39",
@@ -108,7 +106,8 @@ func TestBeatEvents_DNSEvents(t *testing.T) {
 					"perplexing_domain",
 					"unique",
 					"unreachable_domain"},
-				"destination.domain": "hsxfrfokdkojcj.net",
+				"destination.domain":     "hsxfrfokdkojcj.net",
+				"alphasoc.wisdom.labels": nil,
 			},
 		},
 	}
@@ -127,52 +126,24 @@ func TestBeatEvents_DNSEvents(t *testing.T) {
 }
 
 func TestBeatEvents_IPEvent(t *testing.T) {
-	response := `{
-		"follow": "6-8263d641",
-		"more": true,
-		"alerts": [
+	resp := &models.Alerts{
+		Follow: stringPtr("6-8263d641"), More: boolPtr(true),
+		Alerts: &[]models.Alert{
 			{
-				"eventType": "ip",
-				"event": {
-					"ts": "2021-04-07T09:57:17Z",
-					"srcIP": "10.100.92.3",
-					"srcPort": 52065,
-					"srcUser": "danknicholas",
-					"destIP": "50.116.17.41",
-					"destPort": 8009,
-					"proto": "tcp",
-					"bytesIn": 27307,
-					"bytesOut": 5419,
-					"app": "tls1.3",
-					"action": "allowed",
-					"duration": 2.48475075448
-				},
-				"threats": [
-					"sinkholed_destination"
-				],
-				"wisdom": {
-					"flags": [
-					"sinkholed",
-					"unusual_port"
-					]
-				}
-			}
-		],
-		"threats": {
-			"sinkholed_destination": {
-				"title": "Traffic to a known sinkhole indicating infection",
-				"severity": 4
-			}
-		}
-	}`
-
-	body := &alertResponse{Alerts: &[]eventAlert{}}
-	d := json.NewDecoder(strings.NewReader(response))
-	if err := d.Decode(body); err != nil {
-		t.Fatal("cannot decode response", err)
+				EventType: stringPtr("ip"),
+				Event:     []byte(`{"ts": "2021-04-07T09:57:17Z", "srcIP": "10.100.92.3", "srcPort": 52065, "srcUser": "danknicholas", "destIP": "50.116.17.41", "destPort": 8009, "proto": "tcp", "bytesIn": 27307, "bytesOut": 5419, "app": "tls1.3", "action": "allowed", "duration": 2.48475075448}`),
+				Threats:   &[]string{"sinkholed_destination"},
+				Wisdom:    &models.Wisdom{Flags: &[]string{"sinkholed", "unusual_port"}},
+			},
+		},
+		Threats: &map[string]models.Threat{
+			"sinkholed_destination": {Title: "Traffic to a known sinkhole indicating infection", Severity: 4},
+		},
 	}
 
-	events := body.beatEvents()
+	bt := &alphasocbeat{log: logp.L()}
+
+	events := bt.beatEvents(resp)
 
 	expected := []beat.Event{
 		{
@@ -182,7 +153,7 @@ func TestBeatEvents_IPEvent(t *testing.T) {
 				"alphasoc.pipeline": "ip",
 
 				"alphasoc.threat.value":    "sinkholed_destination",
-				"alphasoc.threat.severity": severity(4),
+				"alphasoc.threat.severity": 4,
 				"alphasoc.threat.title":    "Traffic to a known sinkhole indicating infection",
 
 				"source.ip":                  "10.100.92.3",
@@ -202,6 +173,8 @@ func TestBeatEvents_IPEvent(t *testing.T) {
 					"sinkholed",
 					"unusual_port",
 				},
+				"destination.domain":     nil,
+				"alphasoc.wisdom.labels": nil,
 			},
 		},
 	}
@@ -220,55 +193,24 @@ func TestBeatEvents_IPEvent(t *testing.T) {
 }
 
 func TestBeatEvents_TLSEvent(t *testing.T) {
-	response := `{
-		"follow": "6-8263d641",
-		"more": true,
-		"alerts": [
+	resp := &models.Alerts{
+		Follow: stringPtr("6-8263d641"), More: boolPtr(true),
+		Alerts: &[]models.Alert{
 			{
-				"eventType": "tls",
-				"event": {
-				  "ts": "2021-04-07T09:58:18Z",
-				  "srcIP": "10.36.86.38",
-				  "srcPort": 57849,
-				  "certHash": "9fcc5c1e8ec32f56e975ba43c923dbfa16a8f946",
-				  "issuer": "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US",
-				  "subject": "C=US,ST=TX,L=Texas,O=lol,OU=,CN=topbackupintheworld.com",
-				  "validFrom": "2021-03-30T00:34:02Z",
-				  "validTo": "2021-05-29T00:34:02Z",
-				  "destIP": "",
-				  "destPort": 0,
-				  "ja3": "724dedf93fb5a3636a0f1ee8fcec8801",
-				  "ja3s": "015535be754766257f9bfdf3470cd428e0f1cfd4"
-				},
-				"threats": [
-				  "c2_communication"
-				],
-				"wisdom": {
-				  "flags": [
-					"c2"
-				  ],
-				  "labels": [
-					"c2:Cobalt Strike",
-					"c2:Ryuk"
-				  ]
-				}
-			  }
-		],
-		"threats": {
-			"c2_communication": {
-				"title": "C2 communication attempt indicating infection",
-				"severity": 5
-			}
-		}
-	}`
-
-	body := &alertResponse{Alerts: &[]eventAlert{}}
-	d := json.NewDecoder(strings.NewReader(response))
-	if err := d.Decode(body); err != nil {
-		t.Fatal("cannot decode response", err)
+				EventType: stringPtr("tls"),
+				Event:     []byte(`{"ts": "2021-04-07T09:58:18Z", "srcIP": "10.36.86.38", "srcPort": 57849, "certHash": "9fcc5c1e8ec32f56e975ba43c923dbfa16a8f946", "issuer": "CN=Let's Encrypt Authority X3,O=Let's Encrypt,C=US", "subject": "C=US,ST=TX,L=Texas,O=lol,OU=,CN=topbackupintheworld.com", "validFrom": "2021-03-30T00:34:02Z", "validTo": "2021-05-29T00:34:02Z", "destIP": "", "destPort": 0,"ja3": "724dedf93fb5a3636a0f1ee8fcec8801", "ja3s": "015535be754766257f9bfdf3470cd428e0f1cfd4"}`),
+				Threats:   &[]string{"c2_communication"},
+				Wisdom:    &models.Wisdom{Flags: &[]string{"c2"}, Labels: &[]string{"c2:Cobalt Strike", "c2:Ryuk"}},
+			},
+		},
+		Threats: &map[string]models.Threat{
+			"c2_communication": {Title: "C2 communication attempt indicating infection", Severity: 5},
+		},
 	}
 
-	events := body.beatEvents()
+	bt := &alphasocbeat{log: logp.L()}
+
+	events := bt.beatEvents(resp)
 
 	expected := []beat.Event{
 		{
@@ -278,7 +220,7 @@ func TestBeatEvents_TLSEvent(t *testing.T) {
 				"alphasoc.pipeline": "tls",
 
 				"alphasoc.threat.value":    "c2_communication",
-				"alphasoc.threat.severity": severity(5),
+				"alphasoc.threat.severity": 5,
 				"alphasoc.threat.title":    "C2 communication attempt indicating infection",
 
 				"source.ip":                 "10.36.86.38",
@@ -295,6 +237,7 @@ func TestBeatEvents_TLSEvent(t *testing.T) {
 				"alphasoc.wisdom.flags": []string{
 					"c2",
 				},
+				"destination.domain": nil,
 				"alphasoc.wisdom.labels": []string{
 					"c2:Cobalt Strike",
 					"c2:Ryuk",
